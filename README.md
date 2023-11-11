@@ -60,3 +60,29 @@ To run the simulator with an input and output file, run:
 ```bash
 cat ./path/to/input.txt | python main.py > ./path/to/output.txt
 ```
+
+### Test
+
+To run the test cases for all algorithms, run:
+
+```bash
+python test.py
+```
+
+To run all the test cases for a certain algorithm, run:
+
+```bash
+python test.py --algo algorithm_name
+```
+
+To run a single test case, run:
+
+```bash
+python test.py --input input.txt --output expected_output.txt
+```
+
+or using the shorthand:
+
+```bash
+python test.py -i input.txt -o expected_output.txt
+```
