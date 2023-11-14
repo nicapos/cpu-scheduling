@@ -75,6 +75,17 @@ To run all the test cases for a certain algorithm, run:
 python test.py --algo algorithm_name
 ```
 
+To run a certain test case for a certain algorithm, run:
+
+```bash
+python test.py --algo algorithm_name --case n
+```
+
+```bash
+# To use ./test/RR/input02.txt as a test case, run:
+python test.py --algo rr --case 02
+```
+
 To run a single test case, run:
 
 ```bash

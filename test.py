@@ -28,31 +28,41 @@ def run_test_algorithm(algorithm_name: str):
 
         print(input_files[i], result)
 
+def run_test_case(input_file_path: str, expected_output_file_path: str):
+    validate_file_path(input_file_path)
+    validate_file_path(expected_output_file_path)
+
+    is_match = test_output_matches_expected(input_file_path, expected_output_file_path)
+    result = color_string('PASSED', 'green') if is_match else color_string('FAILED', 'red')
+
+    print(input_file_path, result)
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input', type=str, help='Path to the input file')
     parser.add_argument('-o', '--output', type=str, help='Path to the expected output file')
-    parser.add_argument('--algo', type=str, help='Name of the algorithm to test')
+    parser.add_argument('--algo', type=str, help='Name of the algorithm to test (ex. RR)')
+    parser.add_argument('--case', type=int, help='Test case number (ex. 1 for test/RR/input01.txt)')
 
     args = parser.parse_args()
 
     if args.input is not None and args.output is not None:
-        validate_file_path(args.input)
-        validate_file_path(args.output)
-
-        is_match = test_output_matches_expected(args.input, args.output)
-        result = color_string('PASSED', 'green') if is_match else color_string('FAILED', 'red')
-
-        print(args.input, result)
+        run_test_case(args.input, args.output)
 
     elif args.algo is not None:
         algorithm = args.algo.upper()
         if algorithm not in ALGORITHMS:
             raise Exception(f"Invalid algorithm name (passed {algorithm})")
         
-        run_test_algorithm(algorithm)
+        if args.case is not None:
+            input_file_path = f'./test/{algorithm}/input{args.case:02d}.txt'
+            output_file_path = f'./test/{algorithm}/output{args.case:02d}.txt'
+
+            run_test_case(input_file_path, output_file_path)
+
+        else:
+            run_test_algorithm(algorithm)
 
     else:
         # Test everything if no algorithm is specified
