@@ -54,8 +54,19 @@ class Process:
 
         return current_burst_time
     
-    def burst_partial(self, current_time: int, burst_time: int) -> int:
-        pass    # TODO: Implement this for SRTF and RR
+    def burst_partial(self, current_time: int, partial_burst_time: int) -> int:
+        """ Simulates burst, returns the burst time (for current burst) """
+        current_burst_time = min(partial_burst_time, self.burst_time_remaining)
+        self.burst_time_remaining -= current_burst_time
+
+        self.start_times.append(current_time)
+        self.end_times.append(current_time + current_burst_time)
+        
+        if self.burst_time_remaining == 0:
+            wait_time_between_bursts = (len(self.start_times) - 1) * partial_burst_time
+            self.waiting_time = current_time - self.__arrival_time - wait_time_between_bursts
+
+        return current_burst_time
 
     def __str__(self) -> str:
         bursts = []
