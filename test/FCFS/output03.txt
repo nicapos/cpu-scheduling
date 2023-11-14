@@ -1,12 +1,23 @@
-1 start time: 0 end time: 30 | Waiting time: 0
-2 start time: 30 end time: 48 | Waiting time: 28
-3 start time: 48 end time: 86 | Waiting time: 42
-4 start time: 86 end time: 127 | Waiting time: 72
-5 start time: 127 end time: 143 | Waiting time: 111
-6 start time: 143 end time: 163 | Waiting time: 116
-7 start time: 163 end time: 223 | Waiting time: 136
-8 start time: 223 end time: 252 | Waiting time: 192
-9 start time: 252 end time: 300 | Waiting time: 209
-10 start time: 300 end time: 333 | Waiting time: 247
-11 start time: 333 end time: 371 | Waiting time: 278
-Average waiting time: 130.1
+1 start time: 6 end time: 9 | Waiting time: 0
+2 start time: 9 end time: 119 | Waiting time: 2
+3 start time: 119 end time: 206 | Waiting time: 109
+4 start time: 206 end time: 212 | Waiting time: 195
+5 start time: 212 end time: 219 | Waiting time: 199
+6 start time: 219 end time: 312 | Waiting time: 195
+7 start time: 312 end time: 432 | Waiting time: 288
+8 start time: 432 end time: 481 | Waiting time: 403
+9 start time: 481 end time: 551 | Waiting time: 447
+10 start time: 551 end time: 577 | Waiting time: 516
+11 start time: 577 end time: 647 | Waiting time: 536
+12 start time: 647 end time: 684 | Waiting time: 599
+13 start time: 684 end time: 787 | Waiting time: 626
+14 start time: 787 end time: 896 | Waiting time: 720
+15 start time: 896 end time: 938 | Waiting time: 818
+16 start time: 938 end time: 1015 | Waiting time: 854
+17 start time: 1015 end time: 1132 | Waiting time: 928
+18 start time: 1132 end time: 1205 | Waiting time: 1040
+19 start time: 1205 end time: 1246 | Waiting time: 1099
+20 start time: 1246 end time: 1283 | Waiting time: 1133
+21 start time: 1283 end time: 1389 | Waiting time: 1164
+22 start time: 1389 end time: 1496 | Waiting time: 1262
+Average waiting time: 597.0
