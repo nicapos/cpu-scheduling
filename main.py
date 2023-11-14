@@ -1,4 +1,5 @@
 from classes import Process
+import algorithms
 
 def run_simulation():
     user_input = input()
@@ -37,11 +38,15 @@ def run_simulation():
         processes.append(Process(process_id, arrival_time, burst_time))
 
     # TODO: Run simulation here
+    if algorithm == "FCFS":
+        processes = algorithms.fcfs(processes)
 
-    # Sample output
-    # TODO: Remove once simulation is implemented
-    for process in processes:
+    # Print results
+    for process in sorted(processes, key=lambda p: p.id):
         print(process)
+
+    avg_waiting_time = sum([p.waiting_time for p in processes]) / len(processes)
+    print(f"Average waiting time: {avg_waiting_time:.1f}", end='') # Print without newline
 
 
 if __name__ == "__main__":
