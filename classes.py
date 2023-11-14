@@ -38,20 +38,16 @@ class Process:
     
     def burst(self, current_time: int) -> int:
         """ Simulates burst, returns the burst time (for current burst) """
-        current_burst_time = self.burst_time
+        current_burst_time = min(self.burst_time, self.burst_time_remaining)
+        self.burst_time_remaining -= self.burst_time
 
-        if self.burst_time_remaining > 0:
-            if self.burst_time_remaining > self.burst_time:
-                self.burst_time_remaining -= self.burst_time
-                
-            else: # Process will finish in this burst
-                current_burst_time = self.burst_time_remaining
-                self.burst_time_remaining = 0
-
-                completion_time = current_time + self.burst_time
-                turnaround_time = completion_time - self.__arrival_time
-                self.waiting_time = turnaround_time - self.burst_time
-                # SIMPLIFIED: self.waiting_time = current_time - self.__arrival_time
+        if self.burst_time_remaining == 0:
+            """Derived from:
+            completion_time = current_time + self.burst_time
+            turnaround_time = completion_time - self.__arrival_time
+            self.waiting_time = turnaround_time - self.burst_time
+            (current_time == time_completed)"""
+            self.waiting_time = current_time - self.__arrival_time
 
         self.start_times.append(current_time)
         self.end_times.append(current_time + current_burst_time)

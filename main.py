@@ -37,15 +37,20 @@ def run_simulation():
 
         processes.append(Process(process_id, arrival_time, burst_time))
 
-    # TODO: Run simulation here
     if algorithm == "FCFS":
         processes = algorithms.fcfs(processes)
+    elif algorithm == "SJF":
+        processes = algorithms.sjf(processes)
+    elif algorithm == "SRTF":
+        processes = algorithms.srtf(processes)
+    elif algorithm == "RR":
+        processes = algorithms.rr(processes, time_slice)
 
     # Print results
     for process in sorted(processes, key=lambda p: p.id):
         print(process)
 
-    avg_waiting_time = sum([p.waiting_time for p in processes]) / len(processes)
+    avg_waiting_time = sum([p.waiting_time for p in processes]) / max(len(processes), 1)
     print(f"Average waiting time: {avg_waiting_time:.1f}", end='') # Print without newline
 
 
