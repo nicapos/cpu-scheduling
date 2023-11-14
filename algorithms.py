@@ -37,7 +37,7 @@ def rr(processes: list[Process], quantum: int) -> list[Process]:
         process = ready_queue.pop(0)
 
         # Simulate burst
-        burst_duration = process.burst_partial(current_time, quantum)
+        burst_duration = process.burst(current_time, quantum)
         current_time += burst_duration
 
         # Update ready queue
