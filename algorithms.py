@@ -1,5 +1,5 @@
 from classes import Process
-
+import heapq
 
 def fcfs(processes: list[Process]) -> list[Process]:
     processes.sort(key=lambda process: process.arrival_time)
@@ -15,7 +15,40 @@ def fcfs(processes: list[Process]) -> list[Process]:
     return processes
 
 def sjf(processes: list[Process]) -> list[Process]:
-    pass    # TODO: Implement this (Chea)
+    # Sort by arrival time
+    processes.sort(key=lambda process: process._Process__arrival_time)
+
+    processes_done = []
+    ready_queue: list[Process] = []
+    
+    current_time = 0
+    
+    while len(processes) > 0 or len(ready_queue) > 0:
+        # Update ready queue to add all processes that have arrived based on arrival time
+        for process in processes:
+            if process.has_arrived(current_time):
+                # Use heapq to find min for optimization purposes (better when handling bigger data)
+                heapq.heappush(ready_queue, (process.burst_time, process))
+
+        if len(ready_queue) > 0:
+            # Get the process with the shortest burst time from the ready queue
+            shortest_job = heapq.heappop(ready_queue)[1]
+
+            # Execute the current process
+            shortest_job.start_times.append(current_time)
+            current_time += shortest_job.burst_time
+            shortest_job.end_times.append(current_time)
+            processes_done.append(shortest_job)
+
+            # Remove the process from the list of all processes
+            processes.remove(shortest_job)
+        else:
+            # No processes have arrived yet, move time forward
+            current_time += 1
+
+    return processes_done
+
+     
 
 
 def srtf(processes: list[Process]) -> list[Process]:
