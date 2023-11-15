@@ -27,7 +27,7 @@ def sjf(processes: list[Process]) -> list[Process]:
         # Update ready queue to add all processes that have arrived based on arrival time
         for process in processes:
             if process.has_arrived(current_time):
-                # Use heapq to find min for optimization purposes (better when handling bigger data)
+                # Use heapq to find min burst time for optimization purposes (better when handling bigger data)
                 heapq.heappush(ready_queue, (process.burst_time, process))
 
         if len(ready_queue) > 0:
