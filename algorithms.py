@@ -15,7 +15,7 @@ def fcfs(processes: list[Process]) -> list[Process]:
     return processes
 
 def sjf(processes: list[Process]) -> list[Process]:
-    pass    # TODO: Implement this
+    pass    # TODO: Implement this (Chea)
 
 
 def srtf(processes: list[Process]) -> list[Process]:
