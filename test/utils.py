@@ -14,7 +14,7 @@ def color_string(string: str, color: str) -> str:
 
 
 def validate_file_path(file_path: str):
-    if not os.path.isfile(file_path) or not os.path.exists(file_path):
+    if not (os.path.isfile(file_path) or os.path.exists(file_path)):
         raise Exception(f"Invalid input file path (passed '{file_path}')")
     
 

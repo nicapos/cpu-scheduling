@@ -55,7 +55,4 @@ def run_simulation():
 
 
 if __name__ == "__main__":
-    try:
-        run_simulation()
-    except Exception as e:
-        print(f"ERROR: {e}")
+    run_simulation()

@@ -9,6 +9,8 @@ def test_output_matches_expected(input_file_path: str, expected_output_file_path
 
     cmd = f"cat {input_file_path} | python main.py"
     simulation_process = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    if simulation_process.stderr:
+        print(simulation_process.stderr)
     actual_output = simulation_process.stdout
 
     with open(expected_output_file_path, "r") as f:
