@@ -16,6 +16,11 @@ def srtf(processes: List[Process], quantum: int) -> List[Process]:
         if ready_queue:
             process = min(ready_queue, key=lambda x: x.burst_time_remaining)
 
+            # Check if there is a process with a shorter burst time in the ready queue
+            shorter_process = min(ready_queue, key=lambda x: x.burst_time_remaining if x != process else float('inf'))
+            if shorter_process.burst_time_remaining < process.burst_time_remaining:
+                process = shorter_process
+
             # Execute the process
             burst_duration = process.burst(quantum if quantum < process.burst_time_remaining else process.burst_time_remaining)
             current_time += burst_duration
@@ -26,15 +31,17 @@ def srtf(processes: List[Process], quantum: int) -> List[Process]:
                 queue_process = processes.pop(0)
                 heapq.heappush(ready_queue, queue_process)
 
-            if process.burst_time_remaining == 0:
+            if process.burst_time_remaining <= 0:
                 processes_done.append(process)
                 ready_queue.remove(process)
             else:
                 # Remove and reinsert the process to update its position in the ready queue
                 ready_queue.remove(process)
                 heapq.heappush(ready_queue, process)
-        else:
+        elif processes:
             current_time += 1
+            queue_process = processes.pop(0)
+            heapq.heappush(ready_queue, queue_process)
 
         print(f"Current Time: {current_time}")
         print("Ready Queue:", [p.id for p in ready_queue])
