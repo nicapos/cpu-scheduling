@@ -1,13 +1,15 @@
 import subprocess
 import argparse
 import os
+import sys
 
 from test.utils import ALGORITHMS, color_string, validate_file_path, get_test_files
 
 def test_output_matches_expected(input_file_path: str, expected_output_file_path: str) -> bool:
     """Returns True if the output of the simulation matches the expected output, False otherwise"""
 
-    cmd = f"cat {input_file_path} | python main.py"
+    view_cmd = 'type' if sys.platform.startswith('win') else 'cat'
+    cmd = f"{view_cmd} {input_file_path} | python main.py"
     simulation_process = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     if simulation_process.stderr:
         print(simulation_process.stderr)

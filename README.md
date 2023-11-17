@@ -52,12 +52,24 @@ python main.py
 To run the simulator with an input file, run:
 
 ```bash
+# On Windows
+type ./path/to/input.txt | python main.py
+```
+
+```bash
+# On Mac/Linux
 cat ./path/to/input.txt | python main.py
 ```
 
 To run the simulator with an input and output file, run:
 
 ```bash
+# On Windows
+type ./path/to/input.txt | python main.py > ./path/to/output.txt
+```
+
+```bash
+# On Mac/Linux
 cat ./path/to/input.txt | python main.py > ./path/to/output.txt
 ```
 
