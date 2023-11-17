@@ -1,5 +1,6 @@
 import subprocess
 import argparse
+import os
 
 from test.utils import ALGORITHMS, color_string, validate_file_path, get_test_files
 
@@ -56,8 +57,8 @@ def main():
             raise Exception(f"Invalid algorithm name (passed {algorithm})")
         
         if args.case is not None:
-            input_file_path = f'./test/{algorithm}/input{args.case:02d}.txt'
-            output_file_path = f'./test/{algorithm}/output{args.case:02d}.txt'
+            input_file_path = os.path.join('test', algorithm, f'input{args.case:02d}.txt')
+            output_file_path = os.path.join('test', algorithm, f'output{args.case:02d}.txt')
 
             run_test_case(input_file_path, output_file_path)
 

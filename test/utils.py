@@ -1,3 +1,4 @@
+from imghdr import tests
 import os
 
 ALGORITHMS = ["FCFS", "SJF", "SRTF", "RR"]
@@ -19,7 +20,7 @@ def validate_file_path(file_path: str):
 
 def get_test_files(algorithm_name: str) -> tuple[list[str], list[str]]:
     """Returns a tuple of lists containing the input and output file paths for the given algorithm"""
-    tests_directory = f'./test/{algorithm_name.upper()}'
+    tests_directory = os.path.join('test', algorithm_name.upper())
 
     # Get all input files
     input_files = [f for f in os.listdir(tests_directory) if f.startswith("input")]
