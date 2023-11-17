@@ -15,39 +15,43 @@ def fcfs(processes: list[Process]) -> list[Process]:
     return processes
 
 def sjf(processes: list[Process]) -> list[Process]:
-    # Sort by arrival time
-    processes.sort(key=lambda process: process._Process__arrival_time)
+    processes.sort(key=lambda process: process.arrival_time)
 
     processes_done = []
     ready_queue: list[Process] = []
-    
     current_time = 0
     
-    while len(processes) > 0 or len(ready_queue) > 0:
-        # Update ready queue to add all processes that have arrived based on arrival time
-        for process in processes:
-            if process.has_arrived(current_time):
-                # Use heapq to find min burst time for optimization purposes (better when handling bigger data)
-                heapq.heappush(ready_queue, (process.burst_time, process))
+    for _ in range(len(processes)): # O(n)
+        # Update ready queue
+        while processes:
+            if len(ready_queue) == 0:
+                # If queue is empty, move process with earliest arrival time to ready queue
+                process = processes.pop(0)
+                current_time = max(current_time, process.arrival_time)
+                ready_queue.append(process)
 
-        if len(ready_queue) > 0:
-            # Get the process with the shortest burst time from the ready queue
-            shortest_job = heapq.heappop(ready_queue)[1]
+            elif processes[0].has_arrived(current_time):
+                process = processes.pop(0)
+                ready_queue.append(process)
 
-            # Execute the current process
-            shortest_job.start_times.append(current_time)
-            current_time += shortest_job.burst_time
-            shortest_job.end_times.append(current_time)
-            processes_done.append(shortest_job)
+            else:
+                break
 
-            # Remove the process from the list of all processes
-            processes.remove(shortest_job)
+        # Get next process from ready queue
+        sj_index = min(range(len(ready_queue)), key=lambda i: ready_queue[i].burst_time) # get the index of the shortest job
+        process = ready_queue.pop(sj_index)
+    
+        # Simulate burst
+        burst_duration = process.burst(current_time)
+        current_time += burst_duration
+
+        # Move process to ready queue/finished list
+        if process.burst_time_remaining > 0:
+            ready_queue.append(process)
         else:
-            # No processes have arrived yet, move time forward
-            current_time += 1
-
+            processes_done.append(process)
+        
     return processes_done
-
      
 
 
