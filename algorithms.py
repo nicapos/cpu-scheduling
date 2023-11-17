@@ -56,7 +56,56 @@ def sjf(processes: list[Process]) -> list[Process]:
 
 
 def srtf(processes: list[Process]) -> list[Process]:
-    pass    # TODO: Implement this
+    time = 0
+    total_wait = 0
+    pl = list(processes)
+    arrival_queue = heapq.createHeap(len(processes), "ARRIVAL") 
+    ready_queue = heapq.createHeap(pl.size, "BURST")
+
+    if arrival_queue is None or ready_queue is None:
+        print("Error: Unable to allocate")
+        return
+
+    for i in range(pl.size):
+        heapq.insertHeap(arrival_queue, pl.processes[i])
+
+    preempt = 0
+    running = None
+
+    while arrival_queue.size > 0 or ready_queue.size > 0:
+        while heapq.peekHeap(arrival_queue) is not None and heapq.peekHeap(arrival_queue).arrival_time <= time:
+            heapq.insertHeap(ready_queue, heapq.extractMin(arrival_queue))
+            preempt = 1
+
+        if ready_queue.size == 0:
+            time = heapq.peekHeap(arrival_queue).arrival_time if heapq.peekHeap(arrival_queue) is not None else time
+            continue
+
+        if preempt == 1:
+            min_process = heapq.peekHeap(ready_queue)
+            if running is None or running.pid != min_process.pid:
+                heapq.appendStartTime(min_process, time)
+            if running is not None and running.pid != min_process.pid:
+                heapq.appendEndTime(running, time)
+            running = min_process
+            preempt = 0
+
+        time += 1
+        running.remaining_burst -= 1
+
+        if running.remaining_burst == 0:
+            running = None
+            preempt = 1
+            # Compute wait time of completed process
+            completed = heapq.extractMin(ready_queue)
+            heapq.appendEndTime(completed, time)
+            turnaround = time - completed.arrival_time
+            completed.waiting_time = turnaround - completed.burst_time
+            total_wait += completed.waiting_time
+
+    pl.ave_wait_time = total_wait / pl.size
+    heapq.freeHeap(ready_queue)
+    heapq.freeHeap(arrival_queue)
 
 
 def rr(processes: list[Process], quantum: int) -> list[Process]:
