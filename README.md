@@ -53,7 +53,7 @@ To run the simulator with an input file, run:
 
 ```bash
 # On Windows
-type ./path/to/input.txt | python main.py
+type .\path\to\input.txt | python main.py
 ```
 
 ```bash
@@ -65,47 +65,10 @@ To run the simulator with an input and output file, run:
 
 ```bash
 # On Windows
-type ./path/to/input.txt | python main.py > ./path/to/output.txt
+type .\path\to\input.txt | python main.py > .\path\to\output.txt
 ```
 
 ```bash
 # On Mac/Linux
 cat ./path/to/input.txt | python main.py > ./path/to/output.txt
-```
-
-### Test
-
-To run the test cases for all algorithms, run:
-
-```bash
-python test.py
-```
-
-To run all the test cases for a certain algorithm, run:
-
-```bash
-python test.py --algo algorithm_name
-```
-
-To run a certain test case for a certain algorithm, run:
-
-```bash
-python test.py --algo algorithm_name --case n
-```
-
-```bash
-# To use ./test/RR/input02.txt as a test case, run:
-python test.py --algo rr --case 02
-```
-
-To run a single test case, run:
-
-```bash
-python test.py --input input.txt --output expected_output.txt
-```
-
-or using the shorthand:
-
-```bash
-python test.py -i input.txt -o expected_output.txt
 ```
