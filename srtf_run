@@ -1,0 +1,60 @@
+sanity check for SRTF input01.txt
+format: Pn(remaining time)
+
+[time=6] P1 arrives
+[time=6] ready: P1(27) -> next process is P1 (shortest remaining time)
+[time=6] ready: P1(27) | processes: P2(22), P3(20), P4(19), P5(4)
+
+P1 6-10 -> P(27-(10-6)) = P1(23)
+
+[time=10] P2 arrives
+[time=10] ready: P1(23), P2(22) -> next process is P2 (shortest remaining time)
+[time=10] ready: P2(22), P1(23) | processes: P3(20), P4(19), P5(4)
+
+P2 10-13 -> P2(22-(13-10)) = P2(19)
+
+[time=13] P3 arrives
+[time=13] ready: P2(22), P1(23), P3(20) -> next process is P2 (shortest remaining time)
+[time=13] ready: P2(19), P3(20), P1(23) | processes: P4(19), P5(4)
+
+P2 13-20 -> P2(19-(20-13)) = P2(12)
+
+[time=20] P4 arrives
+[time=20] ready: P2(12), P3(20), P1(23), P4(19) -> next process is P2 (shortest remaining time)
+[time=20] ready: P2(12), P4(19), P3(20), P1(23) | processes: P5(4)
+
+P2 20-23 -> P2(12-(23-20)) = P2(9)
+
+[time=23] P5 arrives
+[time=23] ready: P2(12), P4(19), P3(20), P1(23), P5(4) -> next process is P5 (shortest remaining time)
+[time=23] ready: P5(4), P2(12), P4(19), P3(20), P1(23)
+
+P5 23-27 -> P5(4-(27-23)) = P5(0)
+
+[time=27] P5 finishes
+[time=27] ready: P2(12), P4(19), P3(20), P1(23) -> next process is P2 (shortest remaining time)
+[time=27] ready: P2(12), P4(19), P3(20), P1(23) | processes_done: P5
+
+P2 27-36 -> P2(9-(36-27)) = P2(0)
+
+[time=36] P2 finishes
+[time=36] ready: P4(19), P3(20), P1(23) -> next process is P4 (shortest remaining time)
+[time=36] ready: P4(19), P3(20), P1(23) | processes_done: P5, P2
+
+P4 36-55 -> P4(19-(55-36)) = P4(0)
+
+[time=55] P4 finishes
+[time=55] ready: P3(20), P1(23) -> next process is P3 (shortest remaining time)
+[time=55] ready: P3(20), P1(23) | processes_done: P5, P2, P4
+
+P3 55-75 -> P3(20-(75-55)) = P3(0)
+
+[time=75] P3 finishes
+[time=75] ready: P1(23) -> next process is P1 (shortest remaining time)
+[time=75] ready: P1(23) | processes_done: P5, P2, P4, P3
+
+P1 75-98 -> P1(23-(98-75)) = P1(0)
+
+[time=98] P1 finishes
+[time=98] ready: -> next process is none
+[time=98] ready: | processes_done: P5, P2, P4, P3, P1
