@@ -56,56 +56,53 @@ def sjf(processes: list[Process]) -> list[Process]:
 
 
 def srtf(processes: list[Process]) -> list[Process]:
-    time = 0
-    total_wait = 0
-    pl = list(processes)
-    arrival_queue = heapq.createHeap(len(processes), "ARRIVAL") 
-    ready_queue = heapq.createHeap(pl.size, "BURST")
+    processes.sort(key=lambda process: process.arrival_time)
 
-    if arrival_queue is None or ready_queue is None:
-        print("Error: Unable to allocate")
-        return
+    processes_done = []
+    processes_ready: list[Process] = []
 
-    for i in range(pl.size):
-        heapq.insertHeap(arrival_queue, pl.processes[i])
+    # Initialize ready queue with first process
+    processes_ready.append(processes.pop(0))
+    current_time = processes_ready[0].arrival_time
 
-    preempt = 0
-    running = None
+    while len(processes) > 0 or len(processes_ready) > 0:
+        # Get the process with the shortest remaining burst time
+        process = min(processes_ready, key=lambda process: process.burst_time_remaining)
+        processes_ready.remove(process)
 
-    while arrival_queue.size > 0 or ready_queue.size > 0:
-        while heapq.peekHeap(arrival_queue) is not None and heapq.peekHeap(arrival_queue).arrival_time <= time:
-            heapq.insertHeap(ready_queue, heapq.extractMin(arrival_queue))
-            preempt = 1
+        # Get the arrival time of the next process (if any)
+        if processes:
+            next_process = min(processes, key=lambda process: process.arrival_time)
+            burst_time = next_process.arrival_time - current_time
+        else:
+            burst_time = process.burst_time_remaining
 
-        if ready_queue.size == 0:
-            time = heapq.peekHeap(arrival_queue).arrival_time if heapq.peekHeap(arrival_queue) is not None else time
-            continue
+        # Simulate burst
+        burst_duration = process.burst(current_time, burst_time)
+        current_time += burst_duration
 
-        if preempt == 1:
-            min_process = heapq.peekHeap(ready_queue)
-            if running is None or running.pid != min_process.pid:
-                heapq.appendStartTime(min_process, time)
-            if running is not None and running.pid != min_process.pid:
-                heapq.appendEndTime(running, time)
-            running = min_process
-            preempt = 0
+        # Update ready queue
+        while processes:
+            if len(processes_ready) == 0:
+                # If queue is empty, move process with earliest arrival time to ready queue
+                queue_process = processes.pop(0)
+                current_time = max(current_time, process.arrival_time)
+                processes_ready.append(queue_process)
 
-        time += 1
-        running.remaining_burst -= 1
+            elif processes[0].has_arrived(current_time):
+                queue_process = processes.pop(0)
+                processes_ready.append(queue_process)
 
-        if running.remaining_burst == 0:
-            running = None
-            preempt = 1
-            # Compute wait time of completed process
-            completed = heapq.extractMin(ready_queue)
-            heapq.appendEndTime(completed, time)
-            turnaround = time - completed.arrival_time
-            completed.waiting_time = turnaround - completed.burst_time
-            total_wait += completed.waiting_time
+            else:
+                break
 
-    pl.ave_wait_time = total_wait / pl.size
-    heapq.freeHeap(ready_queue)
-    heapq.freeHeap(arrival_queue)
+        # Move process to ready queue/finished list
+        if process.burst_time_remaining > 0:
+            processes_ready.append(process)
+        else:
+            processes_done.append(process)
+
+    return processes_done
 
 
 def rr(processes: list[Process], quantum: int) -> list[Process]:
