@@ -46,6 +46,12 @@ class Process:
         current_burst_time = min(burst_time, self.burst_time_remaining)
         self.burst_time_remaining -= current_burst_time
 
+        # Update waiting time
+        if self.start_times:
+            self.waiting_time += current_time - self.end_times[-1]
+        else:
+            self.waiting_time += current_time - self.arrival_time
+
         # Check if previous burst is the same as this burst's start
         if self.end_times and self.end_times[-1] == current_time:
             # In this case, extend the previous burst
@@ -55,10 +61,6 @@ class Process:
             self.start_times.append(current_time)
             self.end_times.append(current_time + current_burst_time)
         
-        if self.burst_time_remaining == 0:
-            wait_time_between_bursts = (len(self.start_times) - 1) * burst_time
-            self.waiting_time = current_time - self.__arrival_time - wait_time_between_bursts
-
         return current_burst_time
 
     def __str__(self) -> str:
