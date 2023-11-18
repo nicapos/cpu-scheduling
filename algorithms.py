@@ -1,5 +1,4 @@
 from classes import Process
-import heapq
 
 def fcfs(processes: list[Process]) -> list[Process]:
     processes.sort(key=lambda process: process.arrival_time)
@@ -67,7 +66,7 @@ def srtf(processes: list[Process]) -> list[Process]:
 
     while len(processes) > 0 or len(processes_ready) > 0:
         # Get the process with the shortest remaining burst time
-        process = min(processes_ready, key=lambda process: process.burst_time_remaining)
+        process = min(processes_ready, key=lambda process: (process.burst_time_remaining, process.id))
         processes_ready.remove(process)
 
         # Get the arrival time of the next process (if any)
@@ -146,43 +145,3 @@ def rr(processes: list[Process], quantum: int) -> list[Process]:
 
     return processes_done
 
-
-# Long version of FCFS. Can be used as a reference for the other algorithms
-def _fcfs(processes: list[Process]) -> list[Process]:
-    processes.sort(key=lambda process: process.arrival_time)
-
-    processes_done = []
-    ready_queue: list[Process] = []
-
-    current_time = 0
-
-    for _ in range(len(processes)): # O(n)
-        # Update ready queue
-        while processes:
-            if len(ready_queue) == 0:
-                # If queue is empty, move process with earliest arrival time to ready queue
-                process = processes.pop(0)
-                current_time = max(current_time, process.arrival_time)
-                ready_queue.append(process)
-
-            elif processes[0].has_arrived(current_time):
-                process = processes.pop(0)
-                ready_queue.append(process)
-
-            else:
-                break
-
-        # Get next process from ready queue
-        process = ready_queue.pop(0)
-
-        # Simulate burst
-        burst_duration = process.burst(current_time)
-        current_time += burst_duration
-
-        # Move process to ready queue/finished list
-        if process.burst_time_remaining > 0:
-            ready_queue.append(process)
-        else:
-            processes_done.append(process)
-
-    return processes_done
