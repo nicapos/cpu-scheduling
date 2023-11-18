@@ -65,3 +65,6 @@ class Process:
     def __repr__(self) -> str:
         # For debugging only
         return f"Process(id={self.__id}, arrival_time={self.__arrival_time}, burst_time={self.__burst_time})"
+    
+    def __lt__(self, other):
+        return self.burst_time_remaining < other.burst_time_remaining
